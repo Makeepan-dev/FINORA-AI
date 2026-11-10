@@ -90,3 +90,31 @@ Thumbs.db
 
 **/bin/
 **/obj/
+
+# 8. Local-Only Verification Harnesses, Superseded Prototypes & Internal QA Logs
+desktop/verify_packaged_runtime.py
+desktop/publish_github_release.py
+backend/run_desktop_backend.py
+desktop/main.js
+desktop/preload.js
+desktop/package.json
+desktop/splash.html
+desktop/error.html
+desktop/installer/FinoraSetup.csproj
+desktop/installer/FinoraUninstall.csproj
+FINORA_FINAL_FIX_VERIFICATION.md
+FINORA_FINAL_HACKATHON_READINESS_AUDIT.md
+FINORA_GITHUB_PREPUSH_AUDIT.md
+FINORA_GITHUB_PUBLICATION_REPORT.md
+FINORA_WINDOWS_RUNTIME_TEST_REPORT.md
+FINORA_FINAL_GITHUB_CLEANLINESS_AUDIT.md
+docs/FINORA_ARCHITECTURE_AUDIT.md
+docs/FINORA_COMPLETE_FEATURE_AUDIT.md
+docs/FINORA_CROSS_MODULE_WORKFLOW_AUDIT.md
+docs/FINORA_FINAL_FIX_VERIFICATION.md
+docs/FINORA_FINAL_HACKATHON_READINESS_AUDIT.md
+docs/FINORA_IMPLEMENTATION_GAP_MATRIX.md
+docs/FINORA_IMPLEMENTATION_READINESS.md
+docs/FINORA_SECURITY_AND_PRIVACY_AUDIT.md
+docs/architecture/12_PHASE_1_INDEPENDENT_VERIFICATION.md
+

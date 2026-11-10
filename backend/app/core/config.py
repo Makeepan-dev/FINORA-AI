@@ -1,17 +1,44 @@
 import os
+import sys
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Determine whether running as packaged Windows desktop executable
+IS_FROZEN = getattr(sys, "frozen", False)
+IS_DESKTOP_MODE = IS_FROZEN or os.environ.get("FINORA_DESKTOP_MODE") == "1"
+
+
+def get_desktop_data_dir() -> Path:
+    custom_dir = os.environ.get("FINORA_DATA_DIR")
+    if custom_dir:
+        data_dir = Path(custom_dir)
+    else:
+        appdata = os.environ.get("APPDATA")
+        if appdata:
+            data_dir = Path(appdata) / "FINORA"
+        else:
+            data_dir = Path.home() / "AppData" / "Roaming" / "FINORA"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    return data_dir
+
 
 # Determine candidate .env locations
 _BASE_DIR = Path(__file__).resolve().parent.parent.parent  # backend/
 _ROOT_DIR = _BASE_DIR.parent  # FINORA/
 
-_ENV_FILES = [
-    str(_BASE_DIR / ".env"),
-    str(_ROOT_DIR / ".env"),
-    ".env",
-    "backend/.env"
-]
+if IS_DESKTOP_MODE:
+    _DESKTOP_DIR = get_desktop_data_dir()
+    _ENV_FILES = [str(_DESKTOP_DIR / ".env")]
+    _DEFAULT_DB_URL = f"sqlite:///{(_DESKTOP_DIR / 'finora.db').as_posix()}"
+else:
+    _ENV_FILES = [
+        str(_BASE_DIR / ".env"),
+        str(_ROOT_DIR / ".env"),
+        ".env",
+        "backend/.env"
+    ]
+    _DEFAULT_DB_URL = "sqlite:///./finora.db"
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -44,7 +71,7 @@ class Settings(BaseSettings):
     PAYPAL_REQUIRE_WEBHOOK_VERIFICATION: bool = True
 
     # Database
-    DATABASE_URL: str = "sqlite:///./finora.db"
+    DATABASE_URL: str = _DEFAULT_DB_URL
 
 settings = Settings()
 
